@@ -36,7 +36,7 @@ def vectorize(text_file):
         word_counter[word[0]] = 0
 
     # Get character-filtered file text
-    with open(text_file, 'r') as file:
+    with open(text_file, 'r', encoding='utf-8') as file:
         review = list(map(filter_chars, file.read().split(' ')))
 
     # Count occurrences of each word in review
