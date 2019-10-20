@@ -11,9 +11,10 @@ import numpy as np
 def get_word_bag():
     bag_file = 'bag.txt'
     with open(bag_file, 'r') as bag:
-        elems = list(bag_file.read().split('\n'))
+        elems = list(bag.read().split('\n'))
+    elems.pop()
     assert len(elems) == 5000
-    for i in range(elems):
+    for i in range(len(elems)):
         elems[i] = elems[i].split(' ')
         elems[i][1], elems[i][2] = float(elems[i][1])/12500, float(elems[i][2])/12500
     return elems
@@ -22,16 +23,17 @@ def get_word_bag():
 # Order of words is same as order in bag.txt
 def vectorize(text_file):
     # removes all non alphabet characters
-    def filter_chars(s):
-        return re.sub('[^a-zA-Z]+', '', s)
+    def filter_chars(s): # removes all non alphabet characters
+        s = re.sub('<br', '', s)
+        return re.sub('[^a-zA-Z]+', '', s).lower()
  
     # Get bag of words and intialize word vector
-    word_vector = np.zeroes(len(word_bag))
     word_bag = get_word_bag()
+    word_vector = np.zeros(len(word_bag))
     bag_words = list(map(lambda x: x[0], word_bag))
     word_counter = dict()
     for word in word_bag:
-        word_counter[word] = 0
+        word_counter[word[0]] = 0
 
     # Get character-filtered file text
     with open(text_file, 'r') as file:
