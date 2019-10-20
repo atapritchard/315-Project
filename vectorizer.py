@@ -15,11 +15,8 @@ def get_word_bag():
     assert len(words) == 5000
     return words
 
-# Parameters:
-# text_file: 'review_number.txt' (string)
-# word_bucket: {'good', 'bad', ...} (set)
-# Returns:
-# vector: [0, 3, 5, 2, ...] (int list)
+# Converts review text file to vector of size 5000 with values set to word counts
+# Order of words is same as order in bag.txt
 def vectorize(text_file, word_bucket):
     # removes all non alphabet characters
     def filter_chars(s):
