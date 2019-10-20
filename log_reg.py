@@ -33,9 +33,9 @@ print(reg.get_params())
 if(os.path.exists("x_test.npy")):
     x_test = np.load("x_test.npy")
 else:
-    path = "\\task1\\test"
-    reviews = [f for f in listdir(path) if isfile(join(mypath, f))]
-    x_test = np.zeros(len(reviews), 5000)
+    path = os.getcwd() + "\\task1\\test"
+    reviews = [f for f in listdir(path) if isfile(join(path, f))]
+    x_test = np.zeros((len(reviews), 5000))
     for i in range(len(reviews)):
         x_test[i] = vectorize(path + "\\" + reviews[i])
     
