@@ -7,10 +7,11 @@ import os
 
 from vectorizer import vectorize
 
-mypath = "../data"
-pos_reviews = [f for f in listdir(mypath + "/pos_reviews") if isfile (join(mypath, f))]
-neg_reviews = [f for f in listdir(mypath + "/neg_reviews") if isfile (join(mypath, f))]
+mypath = "../task1_data/task1/train"
+pos_reviews = [f for f in listdir(mypath + "/positive") if isfile(join(mypath, f))]
+neg_reviews = [f for f in listdir(mypath + "/negative") if isfile(join(mypath, f))]
 
+##check if npy file already exists, otherwise gather data
 if(os.path.exists("x_train.npy")):
     x_train, y_train = np.load("x_train.npy"), np.load("y_train.npy")
 else:
@@ -26,8 +27,18 @@ else:
 
 reg = LogisticRegressionCV()
 reg.fit(x_train, y_train)
+print(reg.get_params())
 
-x_test = np.load("x_test.npy")
+##get test data
+if(os.path.exists("x_test.npy")):
+    x_test = np.load("x_test.npy")
+else:
+    path = "../task1_data/task1/test"
+    reviews = [f for f in listdir(path) if isfile(join(mypath, f))]
+    x_test = np.zeros(len(reviews), 5000)
+    for i in range(len(reviews)):
+        x_test[i] = vectorize(reviews[i])
+
 reg.predict(x_test)
 
 
