@@ -6,6 +6,7 @@ from os.path import isfile, join
 import os
 
 from vectorizer import vectorize
+from tqdm import tqdm as tqdm
 
 mypath = join(os.getcwd() + "/task1/train")
 pos_reviews = [f for f in listdir(mypath + "/positive") if isfile(join(mypath+ "/positive", f))]
