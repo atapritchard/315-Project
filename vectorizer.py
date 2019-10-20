@@ -37,7 +37,7 @@ def vectorize(text_file):
 
     # Get character-filtered file text
     with open(text_file, 'r') as file:
-        review = filter_chars(file.read()).split(' ')
+        review = list(map(filter_chars, file.read().split(' ')))
 
     # Count occurrences of each word in review
     for i in range(len(review)):
