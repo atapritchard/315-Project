@@ -16,12 +16,12 @@ neg_reviews = [f for f in listdir(mypath + "/negative") if isfile(join(mypath+ "
 if(os.path.exists("x_train.npy")):
     x_train, y_train = np.load("x_train.npy"), np.load("y_train.npy")
 else:
-    x_train = np.zeros((len(pos_reviews) + len(neg_reviews), 5000))
+    x_train = np.zeros((len(pos_reviews) + len(neg_reviews), 5000), dtype=np.float16)
     for i in tqdm(range(len(pos_reviews)), desc='+', ncols=80):
         x_train[i] = vectorize(mypath+ "/positive" + "/" + pos_reviews[i])
     for j in tqdm(range(len(neg_reviews)), desc='-', ncols=80):
         x_train[len(pos_reviews) + j] = vectorize(mypath+ "/positive" + "/" +neg_reviews[j])
-    y_train = np.zeros(len(pos_reviews) + len(neg_reviews))
+    y_train = np.zeros(len(pos_reviews) + len(neg_reviews), dtype=np.float16)
     y_train[:len(pos_reviews)] = 1
     np.save("x_train.npy", x_train)
     np.save("y_train.npy", y_train)
@@ -36,7 +36,7 @@ if(os.path.exists("x_test.npy")):
 else:
     path = os.getcwd() + "/task1/test"
     reviews = [f for f in listdir(path) if isfile(join(path, f))]
-    x_test = np.zeros((len(reviews), 5000))
+    x_test = np.zeros((len(reviews), 5000), dtype=np.float16)
     for i in range(len(reviews)):
         x_test[i] = vectorize(path + "/" + reviews[i])
     
