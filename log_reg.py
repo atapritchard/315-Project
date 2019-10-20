@@ -16,9 +16,9 @@ if(os.path.exists("x_train.npy")):
     x_train, y_train = np.load("x_train.npy"), np.load("y_train.npy")
 else:
     x_train = np.zeros((len(pos_reviews) + len(neg_reviews), 5000))
-    for i in range(len(pos_reviews)):
+    for i in tqdm(range(len(pos_reviews)), desc='+', ncols=80):
         x_train[i] = vectorize(mypath+ "/positive" + "/" + pos_reviews[i])
-    for j in range(len(neg_reviews)):
+    for j in tqdm(range(len(neg_reviews)), desc='-', ncols=80):
         x_train[len(pos_reviews) + j] = vectorize(mypath+ "/positive" + "/" +neg_reviews[j])
     y_train = np.zeros(len(pos_reviews) + len(neg_reviews))
     y_train[:len(pos_reviews)] = 1

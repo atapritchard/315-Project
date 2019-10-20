@@ -29,7 +29,7 @@ def vectorize(text_file):
  
     # Get bag of words and intialize word vector
     word_bag = get_word_bag()
-    word_vector = np.zeros(len(word_bag))
+    word_vector = np.zeros(len(word_bag), dtype=np.float16)
     bag_words = list(map(lambda x: x[0], word_bag))
     word_counter = dict()
     for word in word_bag:
