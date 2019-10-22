@@ -21,14 +21,13 @@ def get_word_bag():
 
 # Converts review text file to vector of size 5000 with values set to word counts
 # Order of words is same as order in bag.txt
-def vectorize(text_file):
+def vectorize(text_file, word_bag):
     # removes all non alphabet characters
     def filter_chars(s): # removes all non alphabet characters
         s = re.sub('<br', '', s)
         return re.sub('[^a-zA-Z]+', '', s).lower()
  
     # Get bag of words and intialize word vector
-    word_bag = get_word_bag()
     word_vector = np.zeros(len(word_bag), dtype=np.float16)
     bag_words = list(map(lambda x: x[0], word_bag))
     word_counter = dict()
