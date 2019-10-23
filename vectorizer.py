@@ -16,7 +16,7 @@ def get_word_bag():
     assert len(elems) == 5000
     for i in range(len(elems)):
         elems[i] = elems[i].split(' ')
-        elems[i][1], elems[i][2] = float(elems[i][1])/12500, float(elems[i][2])/12500
+        elems[i][1], elems[i][2] = float(elems[i][1]), float(elems[i][2])
     return elems
 
 # Converts review text file to vector of size 5000 with values set to word counts
