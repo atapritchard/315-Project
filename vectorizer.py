@@ -45,7 +45,7 @@ def vectorize(text_file, word_bag):
     
     # Set vector values equal to normalized count of word in review
     for i in range(len(word_bag)):
-        word_vector[i] = (word_counter[word_bag[i][0]] - word_bag[i][1]) / word_bag[i][2]
+        word_vector[i] = word_counter[word_bag[i][0]]    # (word_counter[word_bag[i][0]] - word_bag[i][1]) / word_bag[i][2]
     
     return word_vector
 
