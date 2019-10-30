@@ -7,13 +7,16 @@
 import re
 import numpy as np
 
+BAG_SIZE = 5000
+
 # Get the bucket of words, number of occurrences, sum of squared error terms
 def get_word_bag():
     bag_file = 'bag.txt'
     with open(bag_file, 'r') as bag:
         elems = list(bag.read().split('\n'))
     elems.pop()
-    assert len(elems) == 5000
+    print(len(elems))
+    #assert len(elems) == BAG_SIZE
     for i in range(len(elems)):
         elems[i] = elems[i].split(' ')
         elems[i][1], elems[i][2] = float(elems[i][1]), float(elems[i][2])
@@ -28,7 +31,7 @@ def vectorize(text_file, word_bag):
         return re.sub('[^a-zA-Z]+', '', s).lower()
  
     # Get bag of words and intialize word vector
-    word_vector = np.zeros(len(word_bag), dtype=np.float16)
+    word_vector = np.zeros(len(word_bag), dtype=np.float32)
     bag_words = list(map(lambda x: x[0], word_bag))
     word_counter = dict()
     for word in word_bag:
@@ -45,7 +48,7 @@ def vectorize(text_file, word_bag):
     
     # Set vector values equal to normalized count of word in review
     for i in range(len(word_bag)):
-        word_vector[i] = word_counter[word_bag[i][0]]    # (word_counter[word_bag[i][0]] - word_bag[i][1]) / word_bag[i][2]
+        word_vector[i] = word_counter[word_bag[i][0]] #(word_counter[word_bag[i][0]] - word_bag[i][1]) / word_bag[i][2]
     
     return word_vector
 

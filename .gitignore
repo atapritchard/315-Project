@@ -1,3 +1,5 @@
 task1/*
 __pycache__/*
 x_train.npy
+code/*.npy
+task2_data/*

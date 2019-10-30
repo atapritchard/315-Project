@@ -1,9 +1,11 @@
 import re
-from nltk.corpus import stopwords
+import os
+from os.path import isfile, join
 
 NUM_REVIEWS = 12500 # count of each class
 TOTAL_REVIEWS = NUM_REVIEWS * 2 # positive + negative
 BAG_SIZE = 5000
+mypath = "../task1/train"
 
 def filterchars(s): # removes all non alphabet characters
   s = re.sub('<br', '', s)
@@ -13,9 +15,11 @@ bag = {}
 fcount = {}
 
 def countreviews(path, i):
-  sw = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"]
+  with open('stopwords.txt') as f:
+    sw = [word for line in f for word in line.split()]
+
   fullpath = path + "/{0}.txt".format(i + 1)
-  f = open(fullpath, "r")
+  f = open(fullpath, "r", encoding = "utf8")
   fcount[fullpath] = {}
   for word in f.read().split():
     word = filterchars(word)
@@ -32,8 +36,8 @@ def countreviews(path, i):
   f.close()
 
 for i in range(NUM_REVIEWS):
-  countreviews("task1/train/negative", i)
-  countreviews("task1/train/positive", i)
+  countreviews(mypath + "/negative", i)
+  countreviews(mypath + "/positive", i)
 
 for key in bag.keys(): # compute averages
   bag[key] = (bag[key][0], bag[key][0] / TOTAL_REVIEWS, 0)
@@ -45,17 +49,17 @@ def getvariances(path, i):
     bag[word][2] + (fcount[fullpath][word] - bag[word][1]) ** 2)
 
 for i in range(NUM_REVIEWS): # compute variances
-  getvariances("task1/train/negative", i)
-  getvariances("task1/train/positive", i)
+  getvariances(mypath + "/negative", i)
+  getvariances(mypath + "/positive", i)
 
 for key in bag.keys():
   bag[key] = (bag[key][0], bag[key][1], (bag[key][2] / TOTAL_REVIEWS) ** 0.5)
 
-f = open("bag.txt", "w")
+f = open("bag.txt", "w", encoding = "utf8")
 words = bag.items()
 def getval(x):
   return -x[1][0]
 sortedwords = sorted(words, key = getval)
-for word in sortedwords[0:BAG_SIZE]: # word is a tuple (word, (occurrences, avg, var))
+for word in sortedwords[0:min(BAG_SIZE, len(sortedwords))]: # word is a tuple (word, (occurrences, avg, var))
   f.write("{0} {1:.3f} {2:.3f}\n".format(word[0], word[1][1], word[1][2]))
 f.close()
